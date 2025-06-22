@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import ScheduleModal from "@/components/ScheduleModal";
+import ScheduledPosts from "@/components/ScheduledPosts";
+import SocialConnections from "@/components/SocialConnections";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -22,6 +25,9 @@ export default function Dashboard() {
   } = usePost();
 
   const [activeTab, setActiveTab] = useState("posts");
+  const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState<any>(null);
+  const [socialConnections, setSocialConnections] = useState<any[]>([]);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -35,8 +41,69 @@ export default function Dashboard() {
     if (isAuthenticated) {
       fetchPosts();
       fetchPrompts();
+      fetchSocialConnections();
     }
   }, [isAuthenticated, fetchPosts, fetchPrompts]);
+
+  // Fetch social connections
+  const fetchSocialConnections = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("/api/social-connections", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setSocialConnections(data.connections);
+      }
+    } catch (error) {
+      console.error("Error fetching social connections:", error);
+    }
+  };
+
+  // Handle post scheduling
+  const handleSchedulePost = async (platforms: string[], dateTime: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("/api/schedule", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          postId: selectedPost.id,
+          platforms,
+          scheduledFor: dateTime,
+        }),
+      });
+
+      if (response.ok) {
+        alert("Post scheduled successfully!");
+        fetchPosts(); // Refresh posts to show updated status
+      } else {
+        throw new Error("Failed to schedule post");
+      }
+    } catch (error) {
+      console.error("Error scheduling post:", error);
+      throw error;
+    }
+  };
+
+  // Open schedule modal
+  const openScheduleModal = (post: any) => {
+    setSelectedPost(post);
+    setScheduleModalOpen(true);
+  };
+
+  // Close schedule modal
+  const closeScheduleModal = () => {
+    setScheduleModalOpen(false);
+    setSelectedPost(null);
+  };
 
   if (authLoading) {
     return (
@@ -197,7 +264,7 @@ export default function Dashboard() {
               onClick={() => setActiveTab("posts")}
             >
               Your Posts ({posts.length})
-            </button>
+            </button>{" "}
             <button
               className={`pb-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === "templates"
@@ -207,6 +274,26 @@ export default function Dashboard() {
               onClick={() => setActiveTab("templates")}
             >
               Saved Templates ({savedPrompts.length})
+            </button>
+            <button
+              className={`pb-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "scheduled"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
+              }`}
+              onClick={() => setActiveTab("scheduled")}
+            >
+              Scheduled Posts
+            </button>
+            <button
+              className={`pb-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "connections"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
+              }`}
+              onClick={() => setActiveTab("connections")}
+            >
+              Social Connections
             </button>
           </nav>
         </div>{" "}
@@ -274,9 +361,9 @@ export default function Dashboard() {
                     </Card>
                   ) : (
                     <div className="grid gap-6">
-                      {posts.map((post) => (
+                      {posts.map((post, index) => (
                         <Card
-                          key={post.id}
+                          key={post.id || `post-${index}`}
                           className="group hover:shadow-lg transition-shadow"
                         >
                           <div className="flex justify-between items-start">
@@ -319,8 +406,7 @@ export default function Dashboard() {
                                   )}
                                 </div>
                               )}
-                            </div>
-
+                            </div>{" "}
                             <div className="flex items-center space-x-2 ml-4">
                               <button
                                 className="p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
@@ -340,6 +426,25 @@ export default function Dashboard() {
                                     strokeLinejoin="round"
                                     strokeWidth={2}
                                     d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                  />
+                                </svg>
+                              </button>
+                              <button
+                                className="p-2 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                                onClick={() => openScheduleModal(post)}
+                                title="Schedule post"
+                              >
+                                <svg
+                                  className="h-4 w-4"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                                   />
                                 </svg>
                               </button>
@@ -424,9 +529,9 @@ export default function Dashboard() {
                     </Card>
                   ) : (
                     <div className="grid gap-6">
-                      {savedPrompts.map((prompt) => (
+                      {savedPrompts.map((prompt, index) => (
                         <Card
-                          key={prompt.id}
+                          key={prompt.id || `prompt-${index}`}
                           className="group hover:shadow-lg transition-shadow"
                         >
                           <div className="flex justify-between items-start">
@@ -529,12 +634,32 @@ export default function Dashboard() {
                         </Card>
                       ))}
                     </div>
-                  )}
+                  )}{" "}
                 </div>
+              )}
+
+              {/* Scheduled Posts Tab */}
+              {activeTab === "scheduled" && <ScheduledPosts />}
+
+              {/* Social Connections Tab */}
+              {activeTab === "connections" && (
+                <SocialConnections
+                  onConnectionsChange={fetchSocialConnections}
+                />
               )}
             </>
           )}
-        </div>
+        </div>{" "}
+        {/* Schedule Modal */}
+        {scheduleModalOpen && selectedPost && (
+          <ScheduleModal
+            isOpen={scheduleModalOpen}
+            onClose={closeScheduleModal}
+            onSchedule={handleSchedulePost}
+            postContent={selectedPost.content}
+            connectedPlatforms={socialConnections}
+          />
+        )}
       </div>
     </div>
   );
