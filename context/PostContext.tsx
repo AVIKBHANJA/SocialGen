@@ -82,8 +82,16 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({
       const savedPost = await apiService.savePost(post);
       setPosts((prevPosts) => [savedPost, ...prevPosts]);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to save post");
-      throw err;
+      console.log("Failed to save post, API might not be available:", err);
+      // For network/fetch errors, show a friendly message but don't throw
+      if (err.name === "TypeError" || err.message?.includes("fetch")) {
+        setError(
+          "Unable to save post - backend service not available. Generated content is preserved above."
+        );
+      } else {
+        setError(err.response?.data?.message || "Failed to save post");
+        throw err;
+      }
     } finally {
       setLoading(false);
     }
@@ -97,8 +105,16 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({
       const savedPrompt = await apiService.createPrompt(prompt);
       setSavedPrompts((prevPrompts) => [savedPrompt, ...prevPrompts]);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to save prompt");
-      throw err;
+      console.log("Failed to save prompt, API might not be available:", err);
+      // For network/fetch errors, show a friendly message but don't throw
+      if (err.name === "TypeError" || err.message?.includes("fetch")) {
+        setError(
+          "Unable to save prompt template - backend service not available."
+        );
+      } else {
+        setError(err.response?.data?.message || "Failed to save prompt");
+        throw err;
+      }
     } finally {
       setLoading(false);
     }
@@ -111,8 +127,13 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({
       const fetchedPosts = await apiService.getPosts();
       setPosts(fetchedPosts);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to fetch posts");
-      throw err;
+      console.log("Failed to fetch posts, API might not be available:", err);
+      // Set empty array if API is not available instead of throwing
+      setPosts([]);
+      // Only set error for non-network errors
+      if (err.name !== "TypeError" && !err.message?.includes("fetch")) {
+        setError(err.response?.data?.message || "Failed to fetch posts");
+      }
     } finally {
       setLoading(false);
     }
@@ -126,8 +147,13 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({
       const fetchedPrompts = await apiService.getPrompts();
       setSavedPrompts(fetchedPrompts);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to fetch prompts");
-      throw err;
+      console.log("Failed to fetch prompts, API might not be available:", err);
+      // Set empty array if API is not available instead of throwing
+      setSavedPrompts([]);
+      // Only set error for non-network errors
+      if (err.name !== "TypeError" && !err.message?.includes("fetch")) {
+        setError(err.response?.data?.message || "Failed to fetch prompts");
+      }
     } finally {
       setLoading(false);
     }

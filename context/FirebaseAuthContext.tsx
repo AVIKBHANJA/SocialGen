@@ -28,6 +28,7 @@ interface User {
   role: string;
   isActive: boolean;
   firebaseUid?: string;
+  createdAt?: string;
 }
 
 interface FirebaseAuthContextType {
@@ -76,27 +77,40 @@ export const FirebaseAuthProvider: React.FC<{ children: React.ReactNode }> = ({
         console.log(
           "🔄 Syncing Firebase user with backend:",
           firebaseUser.email
-        );
-
-        // Get Firebase ID token
+        ); // Get Firebase ID token
         const idToken = await firebaseUser.getIdToken();
 
         // Send to backend to verify and get/create user
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/firebase-verify`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              idToken,
-              email: firebaseUser.email,
-              displayName: firebaseUser.displayName,
-              uid: firebaseUser.uid,
-            }),
-          }
-        );
+        // Check if API URL is configured
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        if (!apiUrl) {
+          console.log("🔶 No API URL configured, skipping backend sync");
+          setUser({
+            id: firebaseUser.uid,
+            email: firebaseUser.email || "",
+            username:
+              firebaseUser.displayName ||
+              firebaseUser.email?.split("@")[0] ||
+              "User",
+            createdAt: new Date().toISOString(),
+            role: "user",
+            isActive: true,
+          });
+          return;
+        }
+
+        const response = await fetch(`${apiUrl}/auth/firebase-verify`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            idToken,
+            email: firebaseUser.email,
+            displayName: firebaseUser.displayName,
+            uid: firebaseUser.uid,
+          }),
+        });
 
         if (response.ok) {
           const data = await response.json();
