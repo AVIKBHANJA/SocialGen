@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/Input";
 export default function Login() {
   const router = useRouter();
   const { loginWithEmail, loginWithGoogle, loading, error } = useFirebaseAuth();
-  
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -50,31 +50,31 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md space-y-8">
+        {/* Header */}{" "}
+        <div className="text-center">
+          <div className="mx-auto h-16 w-auto bg-gradient-to-r from-primary-500 to-primary-600 rounded-xl flex items-center justify-center px-4">
+            <span className="text-white font-bold text-xl">SocialGen</span>
+          </div>
+          <h2 className="mt-6 text-3xl font-bold tracking-tight text-foreground">
+            Welcome back
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{" "}
-            <Link
-              href="/register"
-              className="font-medium text-blue-600 hover:text-blue-500"
-            >
-              create a new account
-            </Link>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Sign in to your account to continue
           </p>
         </div>
-
-        {/* Google Login Button */}
-        <div>
+        <div className="space-y-6">
+          {/* Google Login Button */}
           <Button
             onClick={handleGoogleLogin}
             disabled={loading}
-            className="group relative w-full flex justify-center py-3 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            variant="outline"
+            size="lg"
+            fullWidth
+            className="relative"
           >
-            <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
               <path
                 fill="currentColor"
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -94,20 +94,20 @@ export default function Login() {
             </svg>
             {loading ? "Signing in..." : "Continue with Google"}
           </Button>
-        </div>
 
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300" />
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-border" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-background px-2 text-muted-foreground">
+                Or continue with email
+              </span>
+            </div>
           </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-gray-50 text-gray-500">Or continue with email</span>
-          </div>
-        </div>
 
-        {/* Email Login Form */}
-        <form className="mt-8 space-y-6" onSubmit={handleEmailLogin}>
-          <div className="space-y-4">
+          {/* Email Login Form */}
+          <form className="space-y-4" onSubmit={handleEmailLogin}>
             <Input
               name="email"
               type="email"
@@ -115,7 +115,6 @@ export default function Login() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="relative block w-full"
             />
             <Input
               name="password"
@@ -124,33 +123,37 @@ export default function Login() {
               value={formData.password}
               onChange={handleChange}
               required
-              className="relative block w-full"
             />
-          </div>
 
-          {(formError || error) && (
-            <div className="text-red-600 text-sm text-center">
-              {formError || error}
-            </div>
-          )}
+            {(formError || error) && (
+              <div className="text-sm text-error-600 dark:text-error-400 text-center p-3 bg-error-50 dark:bg-error-950 rounded-md border border-error-200 dark:border-error-800">
+                {formError || error}
+              </div>
+            )}
 
-          <Button
-            type="submit"
-            disabled={loading}
-            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-          >
-            {loading ? "Signing in..." : "Sign in with Email"}
-          </Button>
+            <Button
+              type="submit"
+              disabled={loading}
+              size="lg"
+              fullWidth
+              isLoading={loading}
+            >
+              Sign in
+            </Button>
+          </form>
 
           <div className="text-center">
-            <Link
-              href="/register"
-              className="font-medium text-blue-600 hover:text-blue-500"
-            >
-              Don't have an account? Sign up
-            </Link>
+            <p className="text-sm text-muted-foreground">
+              Don't have an account?{" "}
+              <Link
+                href="/register"
+                className="font-medium text-primary-600 hover:text-primary-500"
+              >
+                Get started
+              </Link>
+            </p>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

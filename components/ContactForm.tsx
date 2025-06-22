@@ -2,6 +2,9 @@
 
 import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { TextArea } from "@/components/ui/TextArea";
 
 const ContactForm = () => {
   const searchParams = useSearchParams();
@@ -12,6 +15,7 @@ const ContactForm = () => {
     message: "",
     newsletter: false,
   });
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -21,6 +25,7 @@ const ContactForm = () => {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -51,15 +56,14 @@ const ContactForm = () => {
         <div>
           <label
             htmlFor="name"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="block text-sm font-medium text-foreground mb-1"
           >
             Your Name
           </label>
-          <input
+          <Input
             type="text"
             id="name"
             name="name"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
             placeholder="John Doe"
             value={formData.name}
             onChange={handleChange}
@@ -70,15 +74,14 @@ const ContactForm = () => {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="block text-sm font-medium text-foreground mb-1"
           >
             Email Address
           </label>
-          <input
+          <Input
             type="email"
             id="email"
             name="email"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
             placeholder="john.doe@example.com"
             value={formData.email}
             onChange={handleChange}
@@ -90,15 +93,14 @@ const ContactForm = () => {
       <div>
         <label
           htmlFor="subject"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-foreground mb-1"
         >
           Subject
         </label>
-        <input
+        <Input
           type="text"
           id="subject"
           name="subject"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
           placeholder="How can we help you?"
           value={formData.subject}
           onChange={handleChange}
@@ -109,20 +111,23 @@ const ContactForm = () => {
       <div>
         <label
           htmlFor="message"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-foreground mb-1"
         >
           Message
-        </label>
-        <textarea
+        </label>{" "}
+        <TextArea
           id="message"
-          name="message"
-          rows={6}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
           placeholder="Please describe your question or issue in detail..."
           value={formData.message}
-          onChange={handleChange}
+          onChange={(e) => {
+            setFormData((prev) => ({
+              ...prev,
+              message: e.target.value,
+            }));
+          }}
           required
-        ></textarea>
+          rows={6}
+        />
       </div>
 
       <div className="flex items-center">
@@ -132,22 +137,19 @@ const ContactForm = () => {
           type="checkbox"
           checked={formData.newsletter}
           onChange={handleChange}
-          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+          className="h-4 w-4 text-primary focus:ring-primary border-input rounded"
         />
         <label
           htmlFor="newsletter"
-          className="ml-2 block text-sm text-gray-700"
+          className="ml-2 block text-sm text-foreground"
         >
           Subscribe to our newsletter for updates and tips
         </label>
       </div>
 
-      <button
-        type="submit"
-        className="w-full md:w-auto bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-      >
+      <Button type="submit" className="w-full md:w-auto" size="lg">
         Send Message
-      </button>
+      </Button>
     </form>
   );
 };

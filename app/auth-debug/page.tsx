@@ -2,73 +2,78 @@
 
 import React from "react";
 import { useFirebaseAuth } from "@/context/FirebaseAuthContext";
+import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 
 export default function AuthDebug() {
   const { user, firebaseUser, loading, isAuthenticated, error } =
     useFirebaseAuth();
 
   return (
-    <div className="min-h-screen p-8 bg-gray-50">
+    <div className="min-h-screen p-8 bg-background">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Authentication Debug</h1>
+        <h1 className="text-3xl font-bold mb-8 text-foreground">
+          Authentication Debug
+        </h1>
 
-        <div className="bg-white p-6 rounded-lg shadow mb-6">
-          <h2 className="text-xl font-semibold mb-4">Authentication State</h2>
+        <Card className="p-6 mb-6">
+          <h2 className="text-xl font-semibold mb-4 text-foreground">
+            Authentication State
+          </h2>
           <div className="space-y-2">
-            <p>
+            <p className="text-foreground">
               <strong>Loading:</strong> {loading ? "Yes" : "No"}
             </p>
-            <p>
+            <p className="text-foreground">
               <strong>Is Authenticated:</strong>{" "}
               {isAuthenticated ? "Yes" : "No"}
             </p>
-            <p>
+            <p className="text-foreground">
               <strong>Error:</strong> {error || "None"}
             </p>
           </div>
-        </div>
+        </Card>
 
-        <div className="bg-white p-6 rounded-lg shadow mb-6">
-          <h2 className="text-xl font-semibold mb-4">Backend User</h2>
+        <Card className="p-6 mb-6">
+          <h2 className="text-xl font-semibold mb-4 text-foreground">
+            Backend User
+          </h2>
           {user ? (
-            <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">
+            <pre className="bg-muted p-4 rounded text-sm overflow-auto text-foreground">
               {JSON.stringify(user, null, 2)}
             </pre>
           ) : (
-            <p>No backend user data</p>
+            <p className="text-muted-foreground">No backend user data</p>
           )}
-        </div>
+        </Card>
 
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">Firebase User</h2>
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4 text-foreground">
+            Firebase User
+          </h2>
           {firebaseUser ? (
             <div className="space-y-2">
-              <p>
+              <p className="text-foreground">
                 <strong>UID:</strong> {firebaseUser.uid}
               </p>
-              <p>
+              <p className="text-foreground">
                 <strong>Email:</strong> {firebaseUser.email}
               </p>
-              <p>
+              <p className="text-foreground">
                 <strong>Display Name:</strong> {firebaseUser.displayName}
               </p>
-              <p>
+              <p className="text-foreground">
                 <strong>Email Verified:</strong>{" "}
                 {firebaseUser.emailVerified ? "Yes" : "No"}
               </p>
             </div>
           ) : (
-            <p>No Firebase user data</p>
+            <p className="text-muted-foreground">No Firebase user data</p>
           )}
-        </div>
+        </Card>
 
         <div className="mt-6">
-          <button
-            onClick={() => window.location.reload()}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Refresh Page
-          </button>
+          <Button onClick={() => window.location.reload()}>Refresh Page</Button>
         </div>
       </div>
     </div>

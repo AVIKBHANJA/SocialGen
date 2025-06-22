@@ -5,6 +5,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { PostProvider } from "@/context/PostContext";
 import { AdminProvider } from "@/context/AdminContext";
 import { FirebaseAuthProvider } from "@/context/FirebaseAuthContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
@@ -34,19 +35,21 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <FirebaseAuthProvider>
-          <AuthProvider>
-            <PostProvider>
-              <AdminProvider>
-                <div className="flex flex-col min-h-screen">
-                  <Header />
-                  <main className="flex-grow">{children}</main>
-                  <Footer />
-                </div>
-              </AdminProvider>
-            </PostProvider>
-          </AuthProvider>
-        </FirebaseAuthProvider>
+        <ThemeProvider>
+          <FirebaseAuthProvider>
+            <AuthProvider>
+              <PostProvider>
+                <AdminProvider>
+                  <div className="flex flex-col min-h-screen bg-background text-foreground">
+                    <Header />
+                    <main className="flex-grow">{children}</main>
+                    <Footer />
+                  </div>
+                </AdminProvider>
+              </PostProvider>
+            </AuthProvider>
+          </FirebaseAuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

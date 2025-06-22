@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true,
+    // Remove unique constraint - usernames can be duplicated
   },
   email: {
     type: String,

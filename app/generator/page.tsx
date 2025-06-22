@@ -3,6 +3,11 @@
 import React, { useState, useEffect } from "react";
 import { usePost } from "@/context/PostContext";
 import { useFirebaseAuth } from "@/context/FirebaseAuthContext";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
+import { TextArea } from "@/components/ui/TextArea";
+import { Card } from "@/components/ui/Card";
 import Link from "next/link";
 
 // Platform options for selection
@@ -137,240 +142,204 @@ export default function GeneratorPage() {
       console.error("Failed to save prompt", error);
     }
   };
-
   return (
-    <div className="bg-gray-50 min-h-[calc(100vh-65px)]">
-      <div className="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
+    <div className="min-h-screen bg-background">
+      <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold text-foreground">
             Social Media Post Generator
           </h1>
-          <p className="mt-2 text-lg text-gray-600">
+          <p className="mt-4 text-xl text-muted-foreground max-w-3xl mx-auto">
             Generate optimized content for your social media platforms using
             advanced AI
           </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        </div>{" "}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Input Form */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">
-              Enter Your Post Details
-            </h2>
+          <Card className="h-fit">
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold text-foreground">
+                Enter Your Post Details
+              </h2>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Platform */}
-              <div>
-                <label
-                  htmlFor="platform"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Platform <span className="text-red-500">*</span>
-                </label>
-                <select
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Platform */}
+                <Select
                   id="platform"
+                  label="Platform"
                   value={platform}
+                  options={PLATFORM_OPTIONS}
                   onChange={(e) => setPlatform(e.target.value)}
-                  className="block w-full rounded-md border border-gray-300 py-2 px-3 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                  placeholder="Select platform"
                   required
-                >
-                  <option value="">Select platform</option>
-                  {PLATFORM_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                />
 
-              {/* Topic */}
-              <div>
-                <label
-                  htmlFor="topic"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Topic/Theme <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
+                {/* Topic */}
+                <Input
                   id="topic"
+                  label="Topic/Theme"
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
                   placeholder="What's your post about?"
-                  className="block w-full rounded-md border border-gray-300 py-2 px-3 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                   required
                 />
-              </div>
 
-              {/* Target Audience */}
-              <div>
-                <label
-                  htmlFor="audience"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Target Audience <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
+                {/* Target Audience */}
+                <Input
                   id="audience"
+                  label="Target Audience"
                   value={audience}
                   onChange={(e) => setAudience(e.target.value)}
                   placeholder="Who is your target audience?"
-                  className="block w-full rounded-md border border-gray-300 py-2 px-3 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                   required
                 />
-              </div>
 
-              {/* Tone */}
-              <div>
-                <label
-                  htmlFor="tone"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Tone
-                </label>
-                <select
+                {/* Tone */}
+                <Select
                   id="tone"
+                  label="Tone"
                   value={tone}
+                  options={TONE_OPTIONS}
                   onChange={(e) => setTone(e.target.value)}
-                  className="block w-full rounded-md border border-gray-300 py-2 px-3 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                >
-                  {TONE_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                />
 
-              {/* Additional Context */}
-              <div>
-                <label
-                  htmlFor="additionalContext"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Additional Context (Optional)
-                </label>
-                <textarea
+                {/* Additional Context */}
+                <TextArea
                   id="additionalContext"
+                  label="Additional Context (Optional)"
                   value={additionalContext}
                   onChange={(e) => setAdditionalContext(e.target.value)}
-                  placeholder="Add any additional details or specific requirements"
-                  rows={3}
-                  className="block w-full rounded-md border border-gray-300 py-2 px-3 focus:border-blue-500 focus:outline-none focus:ring-blue-500 resize-y"
+                  placeholder="Any specific requirements or details?"
+                  rows={4}
                 />
-              </div>
-
-              <div className="flex space-x-4">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="flex-1 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? "Generating..." : "Generate Post"}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleSavePrompt}
-                  disabled={
-                    !platform || !topic || !audience || loading || promptSaved
-                  }
-                  className="py-2 px-4 border border-blue-300 hover:border-blue-400 text-blue-600 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {promptSaved ? "Saved!" : "Save Template"}
-                </button>
-              </div>
-
-              {error && (
-                <div className="text-red-500 mt-2 text-sm">{error}</div>
-              )}
-            </form>
-
-            {/* Show login prompt for non-authenticated users */}
-            {!isAuthenticated && (
-              <div className="mt-6 p-4 bg-blue-50 rounded-md border border-blue-100">
-                <p className="text-blue-800 text-sm">
-                  <Link href="/login" className="font-medium underline">
-                    Log in
-                  </Link>{" "}
-                  or{" "}
-                  <Link href="/register" className="font-medium underline">
-                    create an account
-                  </Link>{" "}
-                  to save your posts and templates.
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Generated Content */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">
-              Generated Post
-            </h2>
-
-            {result ? (
-              <div className="space-y-6">
-                <div className="p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="mb-3 flex items-center">
-                    {platform && (
-                      <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-                        {PLATFORM_OPTIONS.find((p) => p.value === platform)
-                          ?.label || platform}
-                      </span>
-                    )}
-                  </div>
-                  <div className="prose max-w-none">
-                    {result.split("\n").map((line, i) => (
-                      <p key={i} className="mb-2">
-                        {line}
-                      </p>
-                    ))}
-                  </div>
-                </div>
 
                 <div className="flex space-x-4">
-                  <button
-                    onClick={handleSubmit}
+                  <Button
+                    type="submit"
                     disabled={loading}
-                    className="py-2 px-4 border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    isLoading={loading}
+                    size="lg"
+                    className="flex-1"
                   >
-                    Regenerate
-                  </button>
+                    {loading ? "Generating..." : "Generate Post"}
+                  </Button>
 
-                  <button
-                    onClick={handleSavePost}
-                    disabled={!isAuthenticated || !result || loading || isSaved}
-                    className="flex-1 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  <Button
+                    type="button"
+                    onClick={handleSavePrompt}
+                    disabled={
+                      !platform || !topic || !audience || loading || promptSaved
+                    }
+                    variant="outline"
+                    size="lg"
                   >
-                    {isSaved ? "Saved!" : "Save Post"}
-                  </button>
+                    {promptSaved ? "Saved!" : "Save Template"}
+                  </Button>
                 </div>
-              </div>
-            ) : (
-              <div className="p-8 flex flex-col items-center justify-center text-center text-gray-500 border-2 border-dashed border-gray-300 rounded-lg">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-12 w-12 text-gray-400 mb-3"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                  />
-                </svg>{" "}
-                <p>
-                  Fill in the details and click &quot;Generate Post&quot; to
-                  create your content
-                </p>
-              </div>
-            )}
-          </div>
+
+                {error && (
+                  <div className="text-red-500 text-sm p-3 bg-red-50 dark:bg-red-950 rounded-md border border-red-200 dark:border-red-800">
+                    {error}
+                  </div>
+                )}
+              </form>
+
+              {/* Show login prompt for non-authenticated users */}
+              {!isAuthenticated && (
+                <div className="p-4 bg-primary/10 rounded-lg border border-primary/20">
+                  <p className="text-foreground text-sm">
+                    <Link
+                      href="/login"
+                      className="font-medium text-primary hover:underline"
+                    >
+                      Log in
+                    </Link>{" "}
+                    or{" "}
+                    <Link
+                      href="/register"
+                      className="font-medium text-primary hover:underline"
+                    >
+                      create an account
+                    </Link>{" "}
+                    to save your posts and templates.
+                  </p>
+                </div>
+              )}
+            </div>
+          </Card>{" "}
+          {/* Generated Content */}
+          <Card className="h-fit">
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold text-foreground">
+                Generated Post
+              </h2>
+
+              {result ? (
+                <div className="space-y-6">
+                  <div className="p-4 bg-muted rounded-lg border border-border">
+                    <div className="mb-3 flex items-center">
+                      {platform && (
+                        <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
+                          {PLATFORM_OPTIONS.find((p) => p.value === platform)
+                            ?.label || platform}
+                        </span>
+                      )}
+                    </div>
+                    <div className="prose max-w-none text-foreground">
+                      {result.split("\n").map((line, i) => (
+                        <p key={i} className="mb-2">
+                          {line}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-4">
+                    <Button
+                      onClick={handleSubmit}
+                      disabled={loading}
+                      variant="outline"
+                      size="lg"
+                    >
+                      Regenerate
+                    </Button>
+
+                    <Button
+                      onClick={handleSavePost}
+                      disabled={
+                        !isAuthenticated || !result || loading || isSaved
+                      }
+                      size="lg"
+                      className="flex-1"
+                    >
+                      {isSaved ? "Saved!" : "Save Post"}
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-8 flex flex-col items-center justify-center text-center border-2 border-dashed border-border rounded-lg">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-12 w-12 text-muted-foreground mb-3"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  </svg>
+                  <p className="text-muted-foreground">
+                    Fill in the details and click "Generate Post" to create your
+                    content
+                  </p>
+                </div>
+              )}
+            </div>
+          </Card>
         </div>
       </div>
     </div>

@@ -4,7 +4,10 @@ const User = require("../models/User");
 // Middleware to track API usage
 const trackApiUsage = async (req, res, next) => {
   // Skip tracking for auth routes to avoid validation errors
-  if (req.originalUrl?.includes('/api/auth') || req.originalUrl?.includes('/auth')) {
+  if (
+    req.originalUrl?.includes("/api/auth") ||
+    req.originalUrl?.includes("/auth")
+  ) {
     return next();
   }
 
@@ -43,7 +46,7 @@ const trackApiUsage = async (req, res, next) => {
       const responseTime = endTime - startTime;
 
       // Extract user ID from request (if authenticated)
-      const userId = req.user?.id || null;      // Only track API usage for authenticated users
+      const userId = req.user?.id || null; // Only track API usage for authenticated users
       // Skip tracking if no userId to avoid validation errors
       if (userId) {
         // Create usage record only for authenticated users

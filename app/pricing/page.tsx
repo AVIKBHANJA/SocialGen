@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { Card } from "@/components/ui/Card";
 
 export const metadata = {
   title: "SocialGen - Pricing",
@@ -10,7 +11,7 @@ export const metadata = {
 const PricingPage = () => {
   const CheckIcon = () => (
     <svg
-      className="w-5 h-5 text-green-500 flex-shrink-0"
+      className="w-5 h-5 text-green-500 dark:text-green-400 flex-shrink-0"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
