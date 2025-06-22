@@ -2,9 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { useFirebaseAuth } from "@/context/FirebaseAuthContext";
-import { Card } from "@/components/ui/Card";
-import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
+import {
+  Card,
+  Input,
+  Button,
+  StatusMessage,
+  LoadingState,
+} from "@/components/ui";
 import { useRouter } from "next/navigation";
 import {
   updateUserProfile,
@@ -40,14 +44,10 @@ export default function ProfilePage() {
       setUsername(user.username);
     }
   }, [user]);
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-muted-foreground">Loading Profile...</p>
-        </div>
+        <LoadingState text="Loading Profile..." size="lg" />
       </div>
     );
   }
@@ -192,17 +192,16 @@ export default function ProfilePage() {
                     onChange={(e) => setUsername(e.target.value)}
                     required
                   />
-                </div>
+                </div>{" "}
                 {updateProfileMessage.text && (
-                  <p
-                    className={`text-sm ${
+                  <StatusMessage
+                    type={
                       updateProfileMessage.type === "error"
-                        ? "text-destructive"
-                        : "text-emerald-600"
-                    }`}
-                  >
-                    {updateProfileMessage.text}
-                  </p>
+                        ? "error"
+                        : "success"
+                    }
+                    message={updateProfileMessage.text}
+                  />
                 )}
               </div>
               <div className="p-6 bg-muted/50 border-t border-border flex justify-end">
@@ -264,17 +263,16 @@ export default function ProfilePage() {
                           required
                         />
                       </div>
-                    </div>
+                    </div>{" "}
                     {changePasswordMessage.text && (
-                      <p
-                        className={`text-sm ${
+                      <StatusMessage
+                        type={
                           changePasswordMessage.type === "error"
-                            ? "text-destructive"
-                            : "text-emerald-600"
-                        }`}
-                      >
-                        {changePasswordMessage.text}
-                      </p>
+                            ? "error"
+                            : "success"
+                        }
+                        message={changePasswordMessage.text}
+                      />
                     )}
                   </div>
                   <div className="p-6 bg-muted/50 border-t border-border flex justify-end">
@@ -308,12 +306,10 @@ export default function ProfilePage() {
               >
                 {isDeleting ? "Deleting..." : "Delete My Account"}
               </Button>
-            </div>
+            </div>{" "}
             {deleteMessage.text && (
               <div className="p-6 border-t border-destructive/30">
-                <p className="text-sm text-destructive-foreground">
-                  {deleteMessage.text}
-                </p>
+                <StatusMessage type="error" message={deleteMessage.text} />
               </div>
             )}
           </Card>

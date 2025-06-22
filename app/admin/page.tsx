@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { LoadingState, StatusMessage } from "@/components/ui";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -42,10 +43,7 @@ export default function AdminDashboard() {
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-muted-foreground">Loading...</p>
-        </div>
+        <LoadingState text="Loading admin dashboard..." size="lg" />
       </div>
     );
   }
@@ -130,17 +128,8 @@ export default function AdminDashboard() {
             </button>
           </nav>
         </div>{" "}
-        {loading && (
-          <div className="text-center py-10">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-muted-foreground">Loading...</p>
-          </div>
-        )}
-        {error && (
-          <div className="bg-destructive/10 border border-destructive/20 rounded-md p-4 mb-6">
-            <p className="text-destructive">{error}</p>
-          </div>
-        )}{" "}
+        {loading && <LoadingState text="Loading admin data..." size="md" />}
+        {error && <StatusMessage type="error" message={error} />}{" "}
         {/* Overview Tab */}
         {activeTab === "overview" && stats && (
           <div className="space-y-6">

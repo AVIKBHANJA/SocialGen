@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/Card";
 
 export default function Home() {
   return (
-    <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900">
+    <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900 min-h-screen">
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32 overflow-hidden">
         {/* Animated Background Elements */}
@@ -21,6 +21,7 @@ export default function Home() {
 
         <div className="container mx-auto px-4 relative">
           <div className="text-center max-w-5xl mx-auto">
+            {" "}
             {/* Badge */}
             <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/50 dark:to-purple-900/50 rounded-full border border-blue-200/50 dark:border-blue-700/50 backdrop-blur-sm shadow-lg mb-8">
               <span className="w-2 h-2 bg-green-500 rounded-full mr-3 animate-pulse"></span>
@@ -30,8 +31,7 @@ export default function Home() {
               <span className="ml-3 px-3 py-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-bold rounded-full">
                 NEW
               </span>
-            </div>
-
+            </div>{" "}
             {/* Main Heading */}
             <h1 className="text-5xl md:text-6xl lg:text-8xl font-bold text-gray-900 dark:text-white leading-tight mb-8">
               Transform Ideas into
@@ -43,7 +43,6 @@ export default function Home() {
               </span>
               with SocialGen AI
             </h1>
-
             {/* Subheading */}
             <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed mb-12">
               Create platform-optimized social media posts that drive engagement
@@ -51,8 +50,7 @@ export default function Home() {
               <span className="block mt-2 text-2xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 🚀 Generate viral content 10x faster than manual writing
               </span>
-            </p>
-
+            </p>{" "}
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-16">
               <Link
@@ -100,11 +98,9 @@ export default function Home() {
                 </span>
               </Link>
             </div>
-
           </div>
         </div>
-      </section>
-
+      </section>{" "}
       {/* Demo Section */}
       <section id="demo" className="py-24 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
@@ -122,7 +118,7 @@ export default function Home() {
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-3xl p-8 shadow-2xl border border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-3">
-                  <div className="w-4 h-4 rounded-full bg-red-500"></div>
+                  <div className="w-4 h-4 rounded-full bg-red-500"></div>{" "}
                   <div className="w-4 h-4 rounded-full bg-yellow-500"></div>
                   <div className="w-4 h-4 rounded-full bg-green-500"></div>
                 </div>
@@ -236,8 +232,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
-
+      </section>{" "}
       {/* Features Section */}
       <section id="features" className="py-24 bg-gray-50 dark:bg-gray-800">
         <div className="container mx-auto px-4">
@@ -527,7 +522,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* CTA Section */}
       <section className="py-24 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>

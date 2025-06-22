@@ -4,11 +4,15 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { usePost } from "@/context/PostContext";
 import { useFirebaseAuth } from "@/context/FirebaseAuthContext";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Select } from "@/components/ui/Select";
-import { TextArea } from "@/components/ui/TextArea";
-import { Card } from "@/components/ui/Card";
+import {
+  Button,
+  Input,
+  Select,
+  TextArea,
+  Card,
+  StatusMessage,
+  LoadingState,
+} from "@/components/ui";
 import Link from "next/link";
 
 // Platform options for selection
@@ -191,7 +195,6 @@ export default function GeneratorPage() {
                   placeholder="Select platform"
                   required
                 />
-
                 {/* Topic */}
                 <Input
                   id="topic"
@@ -201,7 +204,6 @@ export default function GeneratorPage() {
                   placeholder="What's your post about?"
                   required
                 />
-
                 {/* Target Audience */}
                 <Input
                   id="audience"
@@ -211,7 +213,6 @@ export default function GeneratorPage() {
                   placeholder="Who is your target audience?"
                   required
                 />
-
                 {/* Tone */}
                 <Select
                   id="tone"
@@ -220,7 +221,6 @@ export default function GeneratorPage() {
                   options={TONE_OPTIONS}
                   onChange={(e) => setTone(e.target.value)}
                 />
-
                 {/* Additional Context */}
                 <TextArea
                   id="additionalContext"
@@ -230,7 +230,6 @@ export default function GeneratorPage() {
                   placeholder="Any specific requirements or details?"
                   rows={4}
                 />
-
                 <div className="flex space-x-4">
                   <Button
                     type="submit"
@@ -253,13 +252,8 @@ export default function GeneratorPage() {
                   >
                     {promptSaved ? "Saved!" : "Save Template"}
                   </Button>
-                </div>
-
-                {error && (
-                  <div className="text-red-500 text-sm p-3 bg-red-50 dark:bg-red-950 rounded-md border border-red-200 dark:border-red-800">
-                    {error}
-                  </div>
-                )}
+                </div>{" "}
+                {error && <StatusMessage type="error" message={error} />}
               </form>
 
               {/* Show login prompt for non-authenticated users */}

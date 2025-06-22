@@ -51,8 +51,7 @@ const config: Config = {
           50: "#fef2f2",
           500: "#ef4444",
           600: "#dc2626",
-        },
-        // Dynamic background colors
+        },        // Dynamic background colors
         background: "rgb(var(--background) / <alpha-value>)",
         foreground: "rgb(var(--foreground) / <alpha-value>)",
         card: "rgb(var(--card) / <alpha-value>)",
@@ -66,6 +65,13 @@ const config: Config = {
         border: "rgb(var(--border) / <alpha-value>)",
         input: "rgb(var(--input) / <alpha-value>)",
         ring: "rgb(var(--ring) / <alpha-value>)",
+        // Error colors for forms and notifications
+        "error-50": "rgb(var(--error-50) / <alpha-value>)",
+        "error-400": "rgb(var(--error-400) / <alpha-value>)",        "error-600": "rgb(var(--error-600) / <alpha-value>)",
+        "error-800": "rgb(var(--error-800) / <alpha-value>)",
+        "error-950": "rgb(var(--error-950) / <alpha-value>)",
+        "warning-500": "rgb(var(--warning-500) / <alpha-value>)",
+        "success-500": "rgb(var(--success-500) / <alpha-value>)",
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],

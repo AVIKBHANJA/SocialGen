@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { LoadingState, EmptyState } from "@/components/ui";
 import ScheduleModal from "@/components/ScheduleModal";
 import ScheduledPosts from "@/components/ScheduledPosts";
 import SocialConnections from "@/components/SocialConnections";
@@ -119,14 +120,10 @@ export default function Dashboard() {
     setScheduleModalOpen(false);
     setSelectedPost(null);
   };
-
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
-          <p className="text-muted-foreground">Loading your dashboard...</p>
-        </div>
+        <LoadingState text="Loading your dashboard..." size="lg" />
       </div>
     );
   }
@@ -314,21 +311,19 @@ export default function Dashboard() {
         </div>{" "}
         {/* Content */}
         <div>
+          {" "}
           {loading ? (
-            <div className="text-center py-16">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
-              <p className="mt-4 text-muted-foreground">
-                Loading your content...
-              </p>
-            </div>
+            <LoadingState text="Loading your content..." size="lg" />
           ) : (
             <>
               {/* Posts Tab */}
               {activeTab === "posts" && (
                 <div className="space-y-6">
+                  {" "}
                   {posts.length === 0 ? (
-                    <Card className="text-center py-12">
-                      <div className="space-y-4">
+                    <EmptyState
+                      variant="card"
+                      icon={
                         <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto">
                           <svg
                             className="w-10 h-10 text-muted-foreground"
@@ -344,15 +339,10 @@ export default function Dashboard() {
                             />
                           </svg>
                         </div>
-                        <div>
-                          <h3 className="text-lg font-medium text-foreground">
-                            No posts yet
-                          </h3>
-                          <p className="text-muted-foreground">
-                            You haven&apos;t created any posts yet. Start
-                            generating your first post!
-                          </p>
-                        </div>
+                      }
+                      title="No posts yet"
+                      description="You haven't created any posts yet. Start generating your first post!"
+                      action={
                         <Link
                           href="/generator"
                           className="inline-flex items-center justify-center rounded-lg bg-primary text-primary-foreground font-medium transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 px-6 py-3"
@@ -370,10 +360,10 @@ export default function Dashboard() {
                               d="M12 4v16m8-8H4"
                             />
                           </svg>
-                          Generate your first post
+                          Create your first post
                         </Link>
-                      </div>
-                    </Card>
+                      }
+                    />
                   ) : (
                     <div className="grid gap-6">
                       {posts.map((post, index) => (
