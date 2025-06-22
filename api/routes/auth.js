@@ -199,4 +199,106 @@ router.post("/firebase-verify", async (req, res) => {
   }
 });
 
+// Update user profile
+router.patch("/profile", require("../../middleware/auth"), async (req, res) => {
+  try {
+    const { username } = req.body;
+    const userId = req.user.id;
+
+    // Find and update user
+    const user = await User.findById(userId).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (username) {
+      user.username = username;
+    }
+
+    await user.save();
+
+    res.json({
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        isActive: user.isActive,
+      },
+    });
+  } catch (err) {
+    console.error("Profile update error:", err.message);
+    res.status(500).json({ message: "Server error during profile update" });
+  }
+});
+
+// Change user password
+router.patch(
+  "/change-password",
+  require("../../middleware/auth"),
+  async (req, res) => {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      const userId = req.user.id;
+
+      // Find user with password
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      // Check if user has a password (not OAuth user)
+      if (!user.password) {
+        return res
+          .status(400)
+          .json({ message: "Cannot change password for OAuth users" });
+      }
+
+      // Verify current password
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        return res
+          .status(400)
+          .json({ message: "Current password is incorrect" });
+      }
+
+      // Hash new password
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(newPassword, salt);
+
+      await user.save();
+
+      res.json({ message: "Password changed successfully" });
+    } catch (err) {
+      console.error("Password change error:", err.message);
+      res.status(500).json({ message: "Server error during password change" });
+    }
+  }
+);
+
+// Delete user account
+router.delete(
+  "/account",
+  require("../../middleware/auth"),
+  async (req, res) => {
+    try {
+      const userId = req.user.id;
+
+      // Find and delete user
+      const user = await User.findByIdAndDelete(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      // TODO: Also delete user's posts, prompts, etc.
+      // You may want to add cascade deletion here
+
+      res.json({ message: "Account deleted successfully" });
+    } catch (err) {
+      console.error("Account deletion error:", err.message);
+      res.status(500).json({ message: "Server error during account deletion" });
+    }
+  }
+);
+
 module.exports = router;

@@ -43,6 +43,7 @@ interface FirebaseAuthContextType {
   ) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
+  refetchUser: () => Promise<void>;
   error: string | null;
 }
 
@@ -56,6 +57,7 @@ const FirebaseAuthContext = createContext<FirebaseAuthContextType>({
   registerWithEmail: async () => {},
   loginWithGoogle: async () => {},
   logout: async () => {},
+  refetchUser: async () => {},
   error: null,
 });
 
@@ -208,7 +210,6 @@ export const FirebaseAuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setLoading(false);
     }
   }, []);
-
   // Logout
   const logout = useCallback(async () => {
     try {
@@ -221,6 +222,13 @@ export const FirebaseAuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
+  // Refetch user data
+  const refetchUser = useCallback(async () => {
+    if (firebaseUser) {
+      await syncUserWithBackend(firebaseUser);
+    }
+  }, [firebaseUser, syncUserWithBackend]);
+
   return (
     <FirebaseAuthContext.Provider
       value={{
@@ -232,6 +240,7 @@ export const FirebaseAuthProvider: React.FC<{ children: React.ReactNode }> = ({
         registerWithEmail,
         loginWithGoogle,
         logout,
+        refetchUser,
         error,
       }}
     >

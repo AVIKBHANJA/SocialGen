@@ -109,8 +109,31 @@ class ApiService {
     const response = await axios.get(`${API_URL}/posts`, { headers: this.getHeaders() });
     return response.data;
   }
-    public async deletePost(id: string) {
+  public async deletePost(id: string) {
     const response = await axios.delete(`${API_URL}/posts/${id}`, { 
+      headers: this.getHeaders() 
+    });
+    return response.data;
+  }
+
+  // User profile management
+  public async updateUserProfile(updates: { username?: string }) {
+    const response = await axios.patch(`${API_URL}/auth/profile`, updates, { 
+      headers: this.getHeaders() 
+    });
+    return response.data;
+  }
+
+  public async changeUserPassword(currentPassword: string, newPassword: string) {
+    const response = await axios.patch(`${API_URL}/auth/change-password`, 
+      { currentPassword, newPassword }, 
+      { headers: this.getHeaders() }
+    );
+    return response.data;
+  }
+
+  public async deleteUserAccount() {
+    const response = await axios.delete(`${API_URL}/auth/account`, { 
       headers: this.getHeaders() 
     });
     return response.data;
@@ -151,3 +174,13 @@ class ApiService {
 
 // Export a singleton instance
 export const apiService = ApiService.getInstance();
+
+// Export convenience functions for profile management
+export const updateUserProfile = (updates: { username?: string }) => 
+  apiService.updateUserProfile(updates);
+
+export const changeUserPassword = (currentPassword: string, newPassword: string) => 
+  apiService.changeUserPassword(currentPassword, newPassword);
+
+export const deleteUserAccount = () => 
+  apiService.deleteUserAccount();

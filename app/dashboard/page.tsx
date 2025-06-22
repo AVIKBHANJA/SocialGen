@@ -52,31 +52,31 @@ export default function Dashboard() {
   if (!isAuthenticated) {
     return null; // Will redirect in the useEffect
   }
-
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        {" "}
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                Dashboard
+                SocialGen Dashboard
               </h1>
               <p className="mt-2 text-muted-foreground">
                 Welcome back,{" "}
                 <span className="font-medium text-foreground">
                   {user?.username}
                 </span>
-                !
+                ! Ready to create amazing content?
               </p>
             </div>{" "}
             <Link
               href="/generator"
-              className="inline-flex items-center justify-center rounded-lg bg-primary text-primary-foreground font-medium transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none px-4 py-2"
+              className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold transition-all duration-300 hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 px-6 py-3"
             >
               <svg
-                className="w-4 h-4 mr-2"
+                className="w-5 h-5 mr-2"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -293,16 +293,17 @@ export default function Dashboard() {
                                 <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
                                   {post.platform}
                                 </span>
-                              </div>
-
+                              </div>{" "}
                               <div className="prose prose-sm max-w-none text-foreground mb-4">
                                 {post.content.split("\n").map((line, i) => (
-                                  <p key={i} className="mb-2 last:mb-0">
+                                  <p
+                                    key={`${post.id}-line-${i}`}
+                                    className="mb-2 last:mb-0"
+                                  >
                                     {line}
                                   </p>
                                 ))}
                               </div>
-
                               {(post.promptData?.topic ||
                                 post.promptData?.audience) && (
                                 <div className="flex flex-wrap gap-2">

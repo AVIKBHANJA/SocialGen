@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { usePost } from "@/context/PostContext";
 import { useFirebaseAuth } from "@/context/FirebaseAuthContext";
 import { Button } from "@/components/ui/Button";
@@ -31,6 +32,9 @@ const TONE_OPTIONS = [
 ];
 
 export default function GeneratorPage() {
+  // URL search parameters for auto-filling from templates
+  const searchParams = useSearchParams();
+
   // Authentication context
   const { isAuthenticated } = useFirebaseAuth();
 
@@ -54,13 +58,27 @@ export default function GeneratorPage() {
   const [result, setResult] = useState("");
   const [isSaved, setIsSaved] = useState(false);
   const [promptSaved, setPromptSaved] = useState(false);
-
   // Load saved prompts when authenticated
   useEffect(() => {
     if (isAuthenticated) {
       fetchPrompts();
     }
   }, [isAuthenticated, fetchPrompts]);
+
+  // Auto-fill form from URL parameters (when using a template)
+  useEffect(() => {
+    const platformParam = searchParams.get("platform");
+    const topicParam = searchParams.get("topic");
+    const audienceParam = searchParams.get("audience");
+    const toneParam = searchParams.get("tone");
+    const additionalContextParam = searchParams.get("additionalContext");
+
+    if (platformParam) setPlatform(platformParam);
+    if (topicParam) setTopic(topicParam);
+    if (audienceParam) setAudience(audienceParam);
+    if (toneParam) setTone(toneParam);
+    if (additionalContextParam) setAdditionalContext(additionalContextParam);
+  }, [searchParams]);
 
   // Update result when content is generated
   useEffect(() => {

@@ -13,18 +13,30 @@ export const Header: React.FC = () => {
     <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
+          {" "}
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">S</span>
+            <Link href="/" className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg>
               </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 SocialGen
               </span>
             </Link>
           </div>
-
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-1">
             <Link
@@ -67,11 +79,9 @@ export const Header: React.FC = () => {
               </>
             )}
           </nav>
-
           {/* Right side */}
           <div className="flex items-center space-x-4">
-            <ThemeToggle />
-
+            <ThemeToggle />{" "}
             {isAuthenticated ? (
               <div className="flex items-center space-x-3">
                 <div className="hidden sm:flex items-center space-x-2">
@@ -84,6 +94,12 @@ export const Header: React.FC = () => {
                     Hi, {user?.username || "User"}
                   </span>
                 </div>
+                <Link
+                  href="/profile"
+                  className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground bg-secondary hover:bg-secondary/80 rounded-md transition-colors"
+                >
+                  Profile
+                </Link>
                 <button
                   onClick={logout}
                   className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground bg-secondary hover:bg-secondary/80 rounded-md transition-colors"
@@ -98,16 +114,15 @@ export const Header: React.FC = () => {
                   className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground bg-secondary hover:bg-secondary/80 rounded-md transition-colors"
                 >
                   Sign in
-                </Link>
+                </Link>{" "}
                 <Link
                   href="/register"
-                  className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary-600 hover:bg-primary-700 rounded-md transition-colors"
+                  className="px-6 py-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300"
                 >
                   Get Started
                 </Link>
               </div>
             )}
-
             {/* Mobile menu button */}
             <button
               className="md:hidden p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent"
@@ -213,10 +228,10 @@ export const Header: React.FC = () => {
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Sign in
-                  </Link>
+                  </Link>{" "}
                   <Link
                     href="/register"
-                    className="block px-3 py-2 text-base font-medium text-primary-foreground bg-primary-600 hover:bg-primary-700 rounded-md text-center"
+                    className="block px-6 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-center hover:shadow-lg transition-all duration-300"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Get Started

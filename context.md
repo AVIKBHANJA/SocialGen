@@ -1,50 +1,49 @@
-# Project Context: Avik's Blog Full Stack Migration
-
 ## Overview
-This project is a full-stack, prompt-centric social media post generator platform. It supports user authentication, storage of custom prompts for different platforms, and leverages the Gemini 2.0 Flash API for AI features. The app is built with Next.js (frontend), Express/Node.js (backend), MongoDB (database), and TypeScript across frontend. Designed for easy deployment on Render.com.
+This project is a full-stack, prompt-centric social media post generator platform. It supports user authentication, storage of custom prompts for different platforms, and leverages the Gemini 2.0 Flash API for AI features. The app is built with Next.js (frontend, TypeScript), Express/Node.js (backend logic, or Next.js API routes), MongoDB (database), and is designed for easy deployment on **Vercel**.
+
+> **Design Vision**:  
+> The user interface must be extremely attractive, modern, and intuitive—matching the best UI/UX examples found on Dribbble and Behance. As a social media post generator website, the design should inspire creativity and encourage engagement, with fluid layouts, beautiful typography, and visually appealing color schemes.
 
 ## Tech Stack
 - **Frontend:** Next.js (TypeScript), Tailwind CSS, Flowbite-React
-- **Backend:** Node.js (Express), Mongoose/MongoDB
+- **Backend:** Next.js API routes (TypeScript) or Node.js (Express, if hosted externally), Mongoose/MongoDB (Atlas)
 - **AI:** Gemini 2.0 Flash API (`@google/generative-ai`)
-- **Deployment:** Render.com (free tier compatible)
+- **Deployment:** Vercel (frontend + API routes), optional: external backend on Render/Fly.io
 
 ## Key Features
 - User authentication: Sign up, login, logout (JWT or NextAuth.js)
 - Home page: Lists all prompts and user content
 - Prompt management: Store/manage custom prompts for multiple platforms
-- Responsive, accessible UI/UX with a focus on modern design
-- Backend and frontend fully typed with TypeScript
+- **Post Scheduling:** User can schedule social media posts directly from our app for Meta (Facebook/Instagram), Twitter (X), and LinkedIn (if LinkedIn's free API allows post scheduling).
+- Responsive, accessible UI/UX with a focus on modern, highly attractive design
+- Frontend fully typed with TypeScript
 
 ## Folder Structure
 ```
-/api         # Express backend 
-/models      # Mongoose schemas 
-/pages       # Next.js pages (TypeScript)
+/pages       # Next.js pages (TypeScript) and API routes under /pages/api
 /components  # Shared and UI components (TypeScript)
 /utils       # Shared utilities (TypeScript)
+/models      # Mongoose schemas (if using MongoDB)
 /public      # Static assets
 ```
 
 ## Environment Variables (example)
-- `MONGO_URI`: MongoDB connection string
+- `MONGO_URI`: MongoDB connection string (use MongoDB Atlas)
 - `JWT_SECRET`: JWT signing key
 - `NEXT_PUBLIC_GEMINI_API_KEY`: Gemini API key
 
-## Deployment (Render)
-- Set all env vars in Render dashboard
-- Start command: `npm run build && npm start` (or use `Procfile`)
-- Ensure ports are set correctly (default: 3000)
+## Deployment (Vercel)
+- Set all environment variables in the Vercel dashboard (for both preview and production)
+- Build command: `next build`
+- Output directory: `.next`
+- Vercel automatically handles Next.js routing and serverless API functions
+- If using an external backend (Express), deploy that separately and connect via API URL
 
 ## Gemini Integration
 - See `/utils/gemini.ts` for Gemini API usage
 - Requires `@google/generative-ai` package
 
 ## Conventions
-- Use TypeScript for only frontend code
+- Use TypeScript for all frontend and API route code
 - Use functional React components
-- Prefer Next.js API routes for new backend features unless deep DB logic is needed
-
----
-
-This context file should be updated with every major architectural change.
+- Use Next.js API routes for backend features (preferred for Vercel)

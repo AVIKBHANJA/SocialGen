@@ -5,7 +5,7 @@ interface CardProps {
   children: React.ReactNode;
   title?: string;
   className?: string;
-  variant?: "default" | "elevated" | "outlined" | "ghost";
+  variant?: "default" | "elevated" | "outlined" | "ghost" | "destructive";
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -15,12 +15,13 @@ export const Card: React.FC<CardProps> = ({
   variant = "default",
 }) => {
   const baseClasses = "rounded-xl overflow-hidden transition-all duration-200";
-
   const variantClasses = {
     default: "bg-card border border-border shadow-sm hover:shadow-md",
     elevated: "bg-card border border-border shadow-lg hover:shadow-xl",
     outlined: "bg-card border-2 border-border hover:border-primary/50",
     ghost: "bg-background/50 backdrop-blur-sm border border-border/50",
+    destructive:
+      "bg-destructive border border-destructive shadow-sm hover:shadow-md",
   };
 
   return (

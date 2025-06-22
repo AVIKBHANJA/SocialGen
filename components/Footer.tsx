@@ -6,24 +6,34 @@ export const Footer: React.FC = () => {
     <footer className="bg-background border-t border-border">
       <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-8 md:space-y-0">
-          {/* Logo and Description */}
+          {/* Logo and Description */}{" "}
           <div className="md:order-1">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">
-                  S
-                </span>
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg>
               </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 SocialGen
               </span>
             </div>
             <p className="text-muted-foreground text-sm max-w-md">
-              AI-powered social media post generation platform. Create engaging
-              content for all your social channels in seconds.
+              Transform your ideas into viral social media content with the
+              power of AI. Create engaging posts that drive real results across
+              all platforms.
             </p>
           </div>
-
           {/* Links */}
           <div className="md:order-2">
             <div className="flex flex-wrap justify-center md:justify-end gap-6">
