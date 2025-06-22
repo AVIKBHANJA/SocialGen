@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { usePost } from "@/context/PostContext";
-import { useAuth } from "@/context/AuthContext";
+import { useFirebaseAuth } from "@/context/FirebaseAuthContext";
 import Link from "next/link";
 
 // Platform options for selection
@@ -27,7 +27,7 @@ const TONE_OPTIONS = [
 
 export default function GeneratorPage() {
   // Authentication context
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useFirebaseAuth();
 
   // Post generation context
   const {

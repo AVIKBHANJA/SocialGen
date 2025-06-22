@@ -109,11 +109,42 @@ class ApiService {
     const response = await axios.get(`${API_URL}/posts`, { headers: this.getHeaders() });
     return response.data;
   }
-  
-  public async deletePost(id: string) {
+    public async deletePost(id: string) {
     const response = await axios.delete(`${API_URL}/posts/${id}`, { 
       headers: this.getHeaders() 
     });
+    return response.data;
+  }
+
+  // Admin API calls
+  public async getAdminDashboard() {
+    const response = await axios.get(`${API_URL}/admin/dashboard`, { headers: this.getHeaders() });
+    return response.data;
+  }
+
+  public async getAdminUsers(page: number = 1, search: string = '') {
+    const params = new URLSearchParams({ page: page.toString(), search });
+    const response = await axios.get(`${API_URL}/admin/users?${params}`, { headers: this.getHeaders() });
+    return response.data;
+  }
+
+  public async updateAdminUser(id: string, updates: { isActive?: boolean; role?: string }) {
+    const response = await axios.patch(`${API_URL}/admin/users/${id}`, updates, { headers: this.getHeaders() });
+    return response.data;
+  }
+
+  public async deleteAdminUser(id: string) {
+    const response = await axios.delete(`${API_URL}/admin/users/${id}`, { headers: this.getHeaders() });
+    return response.data;
+  }
+
+  public async getApiAnalytics(days: number = 30) {
+    const response = await axios.get(`${API_URL}/admin/analytics/api-usage?days=${days}`, { headers: this.getHeaders() });
+    return response.data;
+  }
+
+  public async getGeminiAnalytics(days: number = 30) {
+    const response = await axios.get(`${API_URL}/admin/analytics/gemini-usage?days=${days}`, { headers: this.getHeaders() });
     return response.data;
   }
 }

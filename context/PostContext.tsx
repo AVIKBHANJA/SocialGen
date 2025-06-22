@@ -52,15 +52,15 @@ export const PostProvider: React.FC<{ children: React.ReactNode }> = ({
   const [savedPrompts, setSavedPrompts] = useState<PostParams[]>([]);
   const [generatedContent, setGeneratedContent] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  // Generate post content
+  const [error, setError] = useState<string | null>(null); // Generate post content
   const generatePost = useCallback(
     async (params: PostParams): Promise<string> => {
       setLoading(true);
       setError(null);
       try {
         // Use gemini service to generate content
-        const content = await geminiService.generatePost(params);
+        const result = await geminiService.generatePost(params);
+        const content = typeof result === "string" ? result : result.content;
         setGeneratedContent(content);
         return content;
       } catch (err: any) {

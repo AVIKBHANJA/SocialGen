@@ -62,9 +62,8 @@ class GeminiService {
     }
     return GeminiService.instance;
   }
-  
-  // Method to generate social media post content
-  public async generatePost(params: PostParams): Promise<string> {
+    // Method to generate social media post content
+  public async generatePost(params: PostParams): Promise<{ content: string; tokenUsage?: any }> {
     try {
       const { platform, topic, audience, tone, additionalContext } = params;
       
@@ -73,7 +72,18 @@ class GeminiService {
       
       // Generate content using the model
       const result = await this.model.generateContent(prompt);
-      return result.response.text();
+      const content = result.response.text();
+      
+      // Extract token usage information if available
+      const usageMetadata = result.response.usageMetadata;
+      const tokenUsage = usageMetadata ? {
+        inputTokens: usageMetadata.promptTokenCount || 0,
+        outputTokens: usageMetadata.candidatesTokenCount || 0,
+        totalTokens: usageMetadata.totalTokenCount || 0
+      } : null;
+      
+      return { content, tokenUsage };
+      
     } catch (error) {
       console.error("Error generating content with Gemini:", error);
       throw new Error("Failed to generate content");
@@ -92,11 +102,12 @@ export const generateContent = async (
   tone: string,
   additionalContext?: string
 ): Promise<string> => {
-  return geminiService.generatePost({
+  const result = await geminiService.generatePost({
     platform,
     topic,
     audience,
     tone,
     additionalContext
   });
+  return result.content;
 };

@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useAuth } from "@/context/AuthContext";
+import { useFirebaseAuth } from "@/context/FirebaseAuthContext";
 import { usePost } from "@/context/PostContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function Dashboard() {
   const router = useRouter();
-  const { isAuthenticated, user, loading: authLoading } = useAuth();
+  const { isAuthenticated, user, loading: authLoading } = useFirebaseAuth();
   const {
     posts,
     savedPrompts,

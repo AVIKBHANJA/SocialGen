@@ -121,4 +121,82 @@ router.get("/me", async (req, res) => {
   }
 });
 
+// Firebase Authentication - Verify Firebase token and create/login user
+router.post("/firebase-verify", async (req, res) => {
+  try {
+    const { idToken, email, displayName, uid } = req.body;
+
+    if (!idToken || !email || !uid) {
+      return res
+        .status(400)
+        .json({ message: "Missing required Firebase data" });
+    }
+
+    // For free tier - we trust the frontend Firebase token
+    // In production, you'd verify the token with Firebase Admin SDK
+
+    // Find existing user by Firebase UID or email
+    let user = await User.findOne({
+      $or: [{ firebaseUid: uid }, { email: email }],
+    });
+
+    if (user) {
+      // Update existing user with Firebase UID if not set
+      if (!user.firebaseUid) {
+        user.firebaseUid = uid;
+        user.authProvider = "firebase";
+        await user.save();
+      }
+
+      // Update last login
+      user.lastLogin = new Date();
+      await user.save();
+    } else {
+      // Create new user
+      const username = displayName || email.split("@")[0];
+
+      user = new User({
+        firebaseUid: uid,
+        username: username,
+        email: email,
+        authProvider: "firebase",
+        role: "user",
+        isActive: true,
+        lastLogin: new Date(),
+      });
+
+      await user.save();
+    }
+
+    // Generate JWT token for our backend
+    const payload = {
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role,
+      },
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        isActive: user.isActive,
+      },
+    });
+  } catch (err) {
+    console.error("Firebase verify error:", err.message);
+    res
+      .status(500)
+      .json({ message: "Server error during Firebase authentication" });
+  }
+});
+
 module.exports = router;

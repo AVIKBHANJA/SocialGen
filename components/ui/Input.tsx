@@ -1,7 +1,8 @@
 import React from "react";
 
 interface InputProps {
-  id: string;
+  id?: string;
+  name?: string;
   label?: string;
   placeholder?: string;
   type?: string;
@@ -15,6 +16,7 @@ interface InputProps {
 
 export const Input: React.FC<InputProps> = ({
   id,
+  name,
   label,
   placeholder = "",
   type = "text",
@@ -25,11 +27,13 @@ export const Input: React.FC<InputProps> = ({
   disabled = false,
   className = "",
 }) => {
+  const inputId = id || name || `input-${Math.random()}`;
+
   return (
     <div className={`mb-4 ${className}`}>
       {label && (
         <label
-          htmlFor={id}
+          htmlFor={inputId}
           className="block text-sm font-medium text-gray-700 mb-1"
         >
           {label}
@@ -37,7 +41,8 @@ export const Input: React.FC<InputProps> = ({
         </label>
       )}
       <input
-        id={id}
+        id={inputId}
+        name={name || inputId}
         type={type}
         value={value}
         onChange={onChange}

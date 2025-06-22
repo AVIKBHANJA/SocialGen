@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useAuth } from "@/context/AuthContext";
+import { useFirebaseAuth } from "@/context/FirebaseAuthContext";
 
 export const Header: React.FC = () => {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout, isAuthenticated } = useFirebaseAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -24,7 +24,7 @@ export const Header: React.FC = () => {
                 className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
               >
                 Home
-              </Link>
+              </Link>{" "}
               {isAuthenticated ? (
                 <>
                   <Link
@@ -39,6 +39,14 @@ export const Header: React.FC = () => {
                   >
                     Dashboard
                   </Link>
+                  {user?.role === "admin" && (
+                    <Link
+                      href="/admin"
+                      className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-red-500 hover:border-red-300 hover:text-red-700"
+                    >
+                      Admin
+                    </Link>
+                  )}
                 </>
               ) : (
                 <Link

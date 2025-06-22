@@ -5,6 +5,8 @@ const cors = require("cors");
 const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/posts");
 const promptRoutes = require("./routes/prompts");
+const adminRoutes = require("./routes/admin");
+const { trackApiUsage } = require("../middleware/apiTracking");
 
 dotenv.config();
 const app = express();
@@ -12,6 +14,9 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// API usage tracking middleware (before routes)
+app.use(trackApiUsage);
 
 // Connect to MongoDB
 mongoose
@@ -23,6 +28,7 @@ mongoose
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/prompts", promptRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Base route for API health check
 app.get("/api", (req, res) => {
