@@ -22,7 +22,8 @@ export type IconType =
   | "instagram"
   | "twitter"
   | "linkedin"
-  | "tiktok";
+  | "tiktok"
+  | "x";
 
 interface IconProps {
   type: IconType;
@@ -210,6 +211,14 @@ const icons = {
     <path
       fill="currentColor"
       d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.11-4.9 2.64 2.64 0 01.75.11V9.2a6.27 6.27 0 00-1.11-.1A6.33 6.33 0 1014.3 15.53V3.16a8.26 8.26 0 005.29 3.53z"
+    />
+  ),
+  x: (
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M6 18L18 6M6 6l12 12"
     />
   ),
 };

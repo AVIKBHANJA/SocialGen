@@ -4,10 +4,23 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useFirebaseAuth } from "@/context/FirebaseAuthContext";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { AuthModal } from "@/components/AuthModal";
 
 export const Header: React.FC = () => {
   const { user, logout, isAuthenticated } = useFirebaseAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<"login" | "signup">("login");
+
+  const openLoginModal = () => {
+    setAuthMode("login");
+    setAuthModalOpen(true);
+  };
+
+  const openSignupModal = () => {
+    setAuthMode("signup");
+    setAuthModalOpen(true);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
@@ -109,18 +122,18 @@ export const Header: React.FC = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-3">
-                <Link
-                  href="/login"
+                <button
+                  onClick={openLoginModal}
                   className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground bg-secondary hover:bg-secondary/80 rounded-md transition-colors"
                 >
                   Sign in
-                </Link>{" "}
-                <Link
-                  href="/register"
+                </button>
+                <button
+                  onClick={openSignupModal}
                   className="px-6 py-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300"
                 >
                   Get Started
-                </Link>
+                </button>
               </div>
             )}
             {/* Mobile menu button */}
@@ -222,26 +235,37 @@ export const Header: React.FC = () => {
                   >
                     Pricing
                   </Link>
-                  <Link
-                    href="/login"
-                    className="block px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-md"
-                    onClick={() => setMobileMenuOpen(false)}
+                  <button
+                    onClick={() => {
+                      openLoginModal();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="block w-full text-left px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-md"
                   >
                     Sign in
-                  </Link>{" "}
-                  <Link
-                    href="/register"
-                    className="block px-6 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-center hover:shadow-lg transition-all duration-300"
-                    onClick={() => setMobileMenuOpen(false)}
+                  </button>{" "}
+                  <button
+                    onClick={() => {
+                      openSignupModal();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="block w-full px-6 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-center hover:shadow-lg transition-all duration-300"
                   >
                     Get Started
-                  </Link>
+                  </button>
                 </>
-              )}
+              )}{" "}
             </div>
           </div>
         )}
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        initialMode={authMode}
+      />
     </header>
   );
 };

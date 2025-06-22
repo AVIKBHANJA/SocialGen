@@ -10,6 +10,7 @@ export { PageLayout } from "./PageLayout";
 export { StatusMessage } from "./StatusMessage";
 export { LoadingState } from "./LoadingState";
 export { Icon } from "./Icon";
+export { Modal } from "./Modal";
 
 export type { StatusType } from "./StatusMessage";
 export type { IconType } from "./Icon";
