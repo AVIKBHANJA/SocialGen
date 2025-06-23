@@ -29,10 +29,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
     md: "px-2.5 py-1 text-xs",
     lg: "px-3 py-1.5 text-sm",
   };
-
   const getStatusClasses = () => {
-    const baseClasses = "inline-flex items-center font-medium rounded-full";
-
     switch (status) {
       case "pending":
         return variant === "outline"

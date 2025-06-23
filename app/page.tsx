@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
 
 export default function Home() {
   return (
@@ -153,14 +151,12 @@ export default function Home() {
                         LinkedIn
                       </span>
                     </div>
-
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Topic
-                    </label>
+                    </label>{" "}
                     <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-gray-800 dark:text-gray-200 text-sm mb-4">
-                      "AI breakthrough in healthcare diagnostics"
+                      &quot;AI breakthrough in healthcare diagnostics&quot;
                     </div>
-
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Tone
                     </label>
@@ -280,9 +276,9 @@ export default function Home() {
                 AI-Powered Generation
               </h3>
               <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-                Harness Google's Gemini 2.0 Flash API to create highly engaging,
-                platform-specific content perfectly optimized for your target
-                audience and goals.
+                Harness Google&apos;s Gemini 2.0 Flash API to create highly
+                engaging, platform-specific content perfectly optimized for your
+                target audience and goals.
               </p>
               <div className="flex items-center text-sm text-blue-600 dark:text-blue-400 font-medium">
                 <span>Powered by Google Gemini</span>
@@ -547,7 +543,7 @@ export default function Home() {
             </h2>
             <p className="text-xl md:text-2xl opacity-90 max-w-3xl mx-auto leading-relaxed">
               Join thousands of content creators, marketers, and businesses who
-              are saving time and improving engagement with SocialGen's
+              are saving time and improving engagement with SocialGen&apos;s
               AI-powered content generation.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-8">

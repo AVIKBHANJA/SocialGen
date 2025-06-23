@@ -67,13 +67,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         setFormError(validationResult.error || "Validation failed");
         return;
       }
-
       try {
         await loginWithEmail(formData.email, formData.password);
         onClose();
         router.push("/dashboard");
-      } catch (err: any) {
-        setFormError(err.message || "Login failed");
+      } catch (err: unknown) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Login failed";
+        setFormError(errorMessage);
       }
     } else {
       // Signup validation
@@ -88,7 +89,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         setFormError(validationResult.error || "Validation failed");
         return;
       }
-
       try {
         await registerWithEmail(
           formData.email,
@@ -97,20 +97,23 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         );
         onClose();
         router.push("/dashboard");
-      } catch (err: any) {
-        setFormError(err.message || "Registration failed");
+      } catch (err: unknown) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Registration failed";
+        setFormError(errorMessage);
       }
     }
   };
-
   const handleGoogleAuth = async () => {
     setFormError("");
     try {
       await loginWithGoogle();
       onClose();
       router.push("/dashboard");
-    } catch (err: any) {
-      setFormError(err.message || "Google authentication failed");
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Google authentication failed";
+      setFormError(errorMessage);
     }
   };
 

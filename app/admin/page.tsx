@@ -20,7 +20,6 @@ export default function AdminDashboard() {
     fetchDashboardStats,
     fetchUsers,
     updateUser,
-    deleteUser,
   } = useAdmin();
 
   const [activeTab, setActiveTab] = useState("overview");
@@ -52,9 +51,9 @@ export default function AdminDashboard() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-destructive">Access Denied</h1>
+          <h1 className="text-2xl font-bold text-destructive">Access Denied</h1>{" "}
           <p className="mt-2 text-muted-foreground">
-            You don't have admin privileges.
+            You don&apos;t have admin privileges.
           </p>
         </div>
       </div>
@@ -190,7 +189,7 @@ export default function AdminDashboard() {
               </div>
               <div className="px-6 py-4">
                 <div className="space-y-4">
-                  {stats.topUsers.map((user, index) => (
+                  {stats.topUsers.map((user) => (
                     <div
                       key={user.email}
                       className="flex items-center justify-between"

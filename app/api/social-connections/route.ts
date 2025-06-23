@@ -7,11 +7,10 @@ export async function POST(request: NextRequest) {
   try {
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });    }
 
     const token = authHeader.substring(7);
-    const decoded = verify(token, process.env.JWT_SECRET!) as any;
+    const decoded = verify(token, process.env.JWT_SECRET!) as { userId: string };
     const userId = decoded.userId;
 
     const body = await request.json();
@@ -74,14 +73,13 @@ export async function GET(request: NextRequest) {
   try {
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });    }
 
     const token = authHeader.substring(7);
-    const decoded = verify(token, process.env.JWT_SECRET!) as any;
+    const decoded = verify(token, process.env.JWT_SECRET!) as { userId: string };
     const userId = decoded.userId;
 
-    const connections = await SocialConnection.find({ 
+    const connections = await SocialConnection.find({
       user: userId,
       isActive: true 
     }).select('-accessToken -refreshToken'); // Don't send sensitive tokens
@@ -100,11 +98,10 @@ export async function DELETE(request: NextRequest) {
   try {
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });    }
 
     const token = authHeader.substring(7);
-    const decoded = verify(token, process.env.JWT_SECRET!) as any;
+    const decoded = verify(token, process.env.JWT_SECRET!) as { userId: string };
     const userId = decoded.userId;
 
     const { searchParams } = new URL(request.url);

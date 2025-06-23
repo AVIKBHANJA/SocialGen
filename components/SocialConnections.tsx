@@ -362,11 +362,11 @@ export default function SocialConnections({
             <div>
               <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-1">
                 Setup Required
-              </h4>
+              </h4>{" "}
               <p className="text-sm text-blue-700 dark:text-blue-300">
-                To enable social media publishing, you'll need to set up OAuth
-                applications for each platform and configure the appropriate API
-                keys in your environment variables.
+                To enable social media publishing, you&apos;ll need to set up
+                OAuth applications for each platform and configure the
+                appropriate API keys in your environment variables.
               </p>
             </div>
           </div>

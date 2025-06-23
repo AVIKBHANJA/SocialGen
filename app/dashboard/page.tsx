@@ -6,7 +6,6 @@ import { usePost } from "@/context/PostContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
 import { LoadingState, EmptyState } from "@/components/ui";
 import ScheduleModal from "@/components/ScheduleModal";
 import ScheduledPosts from "@/components/ScheduledPosts";
@@ -27,8 +26,14 @@ export default function Dashboard() {
 
   const [activeTab, setActiveTab] = useState("posts");
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
-  const [selectedPost, setSelectedPost] = useState<any>(null);
-  const [socialConnections, setSocialConnections] = useState<any[]>([]);
+  const [selectedPost, setSelectedPost] = useState<{
+    _id: string;
+    content: string;
+    platforms: string[];
+  } | null>(null);
+  const [socialConnections, setSocialConnections] = useState<
+    Array<{ platform: string; isActive: boolean }>
+  >([]);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -91,7 +96,7 @@ export default function Dashboard() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          postId: selectedPost.id,
+          postId: selectedPost?._id,
           platforms,
           scheduledFor: dateTime,
         }),
@@ -107,11 +112,18 @@ export default function Dashboard() {
       console.log("Scheduling API not available:", error);
       alert("Scheduling API not available in demo mode");
     }
-  };
-
-  // Open schedule modal
-  const openScheduleModal = (post: any) => {
-    setSelectedPost(post);
+  }; // Open schedule modal
+  const openScheduleModal = (post: {
+    id?: string;
+    _id?: string;
+    content: string;
+    platforms?: string[];
+  }) => {
+    setSelectedPost({
+      _id: post.id || post._id || "",
+      content: post.content,
+      platforms: post.platforms || [],
+    });
     setScheduleModalOpen(true);
   };
 

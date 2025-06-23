@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import ScheduledPost from '@/models/ScheduledPost';
 import Post from '@/models/Post';
 import schedulingService from '@/utils/schedulingService';
 import { verify } from 'jsonwebtoken';
@@ -9,11 +8,10 @@ export async function POST(request: NextRequest) {
   try {
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });    }
 
     const token = authHeader.substring(7);
-    const decoded = verify(token, process.env.JWT_SECRET!) as any;
+    const decoded = verify(token, process.env.JWT_SECRET!) as { userId: string };
     const userId = decoded.userId;
 
     const body = await request.json();
@@ -71,15 +69,14 @@ export async function GET(request: NextRequest) {
   try {
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });    }
 
     const token = authHeader.substring(7);
-    const decoded = verify(token, process.env.JWT_SECRET!) as any;
-    const userId = decoded.userId;
+    const decoded = verify(token, process.env.JWT_SECRET!) as { userId: string };
+    const userId = decoded.userId;    const { searchParams } = new URL(request.url);
+    const status = searchParams.get('status');
 
-    const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status');    const scheduledPosts = await (schedulingService as any).getUserScheduledPosts(
+    const scheduledPosts = await (schedulingService as { getUserScheduledPosts: (userId: string, status?: string | null) => Promise<unknown> }).getUserScheduledPosts(
       userId,
       status
     );

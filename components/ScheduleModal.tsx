@@ -15,7 +15,11 @@ interface ScheduleModalProps {
   onClose: () => void;
   postContent: string;
   onSchedule: (platforms: string[], dateTime: string) => Promise<void>;
-  connectedPlatforms: any[];
+  connectedPlatforms: Array<{
+    platform: string;
+    isActive: boolean;
+    platformAccountName?: string;
+  }>;
 }
 
 export default function ScheduleModal({

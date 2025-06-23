@@ -68,10 +68,12 @@ export default function ProfilePage() {
         type: "success",
         text: "Profile updated successfully!",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to update profile.";
       setUpdateProfileMessage({
         type: "error",
-        text: error.message || "Failed to update profile.",
+        text: errorMessage,
       });
     } finally {
       setIsUpdatingProfile(false);
@@ -105,10 +107,12 @@ export default function ProfilePage() {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmNewPassword("");
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to change password.";
       setChangePasswordMessage({
         type: "error",
-        text: error.message || "Failed to change password.",
+        text: errorMessage,
       });
     } finally {
       setIsChangingPassword(false);
@@ -126,10 +130,12 @@ export default function ProfilePage() {
       try {
         await deleteUserAccount();
         router.push("/");
-      } catch (error: any) {
+      } catch (error: unknown) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Failed to delete account.";
         setDeleteMessage({
           type: "error",
-          text: error.message || "Failed to delete account.",
+          text: errorMessage,
         });
       } finally {
         setIsDeleting(false);
